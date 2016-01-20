@@ -1,7 +1,11 @@
 package net.imagej.itk.test;
 
+import static org.junit.Assert.assertEquals;
+
 import org.itk.simple.Image;
 import org.itk.simple.SimpleITK;
+import org.itk.simple.VectorInt64;
+import org.itk.simple.VectorUInt32;
 import org.junit.Test;
 
 import net.imagej.itk.ImageProxy;
@@ -21,6 +25,13 @@ public class TestImageProxy {
 		Image img = proxy.getImage();
 
 		Image result = SimpleITK.sin(img);
+
+		VectorUInt32 pos = new VectorUInt32(2);
+		VectorInt64 pixel = result.getPixelAsVectorInt64(pos);
+
+		for (int i = 0; i < 100; ++i) {
+			assertEquals(pixel.get(i), (long) Math.sin(i));
+		}
 
 		proxy.release();
 	}
