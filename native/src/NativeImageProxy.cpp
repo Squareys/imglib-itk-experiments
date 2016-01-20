@@ -28,7 +28,10 @@ void findImageProxyClass(JNIEnv* env) {
  * Method:    acquire
  * Signature: ([J[J)V
  */
-JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire(JNIEnv * env, jobject o, jlongArray pixelData, jlongArray dimensions) {
+JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire
+  (JNIEnv * env, jobject o, jlongArray pixelData, jlongArray dimensions) {
+    findImageProxyClass(env);
+    
     jboolean isCopy = false;
     long long* pixelDataPointer = static_cast<long long*>(env->GetLongArrayElements(pixelData, &isCopy));
     jint pixelDataLength = env->GetArrayLength(pixelData);
@@ -45,17 +48,11 @@ JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire(JNIEnv * env, jobj
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_release(JNIEnv * env, jobject o) {
-    if (imageProxyClass == nullptr) {
-        imageProxyClass = env->FindClass("net/imagej/itk/ImageProxy");
-    }
-
-    // get fieldIDs
-    jfieldID arrayPointerField = env->GetFieldID(imageProxyClass, "internalArrayPointer", "j");
-    jfieldID pixelDataField = env->GetFieldID(imageProxyClass, "pixelData", "[j");
+    findImageProxyClass(env);
 
     // get values of fields
-    jlong* arrayPointer = reinterpret_cast<jlong*>(env->GetLongField(o, arrayPointerField));
-    jlongArray pixelData = jlongArray(env->GetObjectField(o, pixelDataField));
+    jlong* arrayPointer = reinterpret_cast<jlong*>(env->GetLongField(o, imageProxy_internalArrayPointer));
+    jlongArray pixelData = jlongArray(env->GetObjectField(o, imageProxy_pixelData));
 
     // release the array.
     env->ReleaseLongArrayElements(pixelData, arrayPointer, (jint)0);
