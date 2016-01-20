@@ -1,8 +1,5 @@
 package net.imagej.itk;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import org.itk.simple.Image;
 
 public class ImageProxy {
@@ -57,9 +54,9 @@ public class ImageProxy {
 	 * Release the reference to the acquired array data.
 	 */
 	public native void release();
-	
+
 	public static long getCPtr(ImageProxy p) {
 		return (p == null) ? 0 : p.internalImagePointer;
 	}
-	
+
 }
