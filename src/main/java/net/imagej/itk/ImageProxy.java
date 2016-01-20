@@ -8,7 +8,7 @@ import org.itk.simple.Image;
 public class ImageProxy {
 
 	static {
-		System.loadLibrary("lib/libNativeImageProxy");
+		System.loadLibrary("NativeImageProxy");
 	}
 
 	/* Some members only used from the C side */
