@@ -9,9 +9,15 @@ set(NATIVEIMAGEPROXY_HEADERS
 
 add_library(NativeImageProxy SHARED ${NATRIVEIMAGEPROXY_SRC} ${NATIVEIMAGEPROXY_HEADERS})
 
-SET_TARGET_PROPERTIES(NativeImageProxy PROPERTIES
-  COMPILE_FLAGS "-Wall -Wl,--kill-at -D_JNI_IMPLEMENTATION_ ${SHARED_FLAGS}"
-)
+if(WIN32)
+  set_target_properties(NativeImageProxy PROPERTIES
+    COMPILE_FLAGS "-Wall -Wl,--kill-at -D_JNI_IMPLEMENTATION_ ${SHARED_FLAGS}"
+  )
+else()
+  set_target_properties(NativeImageProxy PROPERTIES
+    COMPILE_FLAGS "-D_JNI_IMPLEMENTATION_"
+  )
+endif()
 
 target_compile_features(NativeImageProxy PUBLIC cxx_nullptr)
 target_compile_features(NativeImageProxy PUBLIC cxx_constexpr)
