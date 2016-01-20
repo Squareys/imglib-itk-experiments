@@ -48,25 +48,8 @@ public class ImageProxy {
 		if (internalImagePointer == 0) {
 			return null;
 		}
-		
-		Image newInstance = null;
-		try {
-			Constructor<Image> constructor = Image.class.getConstructor(long.class, boolean.class);
-			constructor.setAccessible(true);
-			newInstance = constructor.newInstance(internalImagePointer, false);
-		} catch (NoSuchMethodException e1) {
-			e1.printStackTrace();
-		} catch (SecurityException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
+
+		Image newInstance = new SneakyImage(internalImagePointer, false);
 		return newInstance;
 	}
 
