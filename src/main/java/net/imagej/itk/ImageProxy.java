@@ -11,7 +11,7 @@ public class ImageProxy {
 	/* Some members only used from the C side */
 	private long internalImagePointer;
 	private long internalArrayPointer;
-	private long[] pixels;
+	private long[] pixelData;
 
 	/**
 	 * Constructor
@@ -21,7 +21,12 @@ public class ImageProxy {
 	 */
 	public ImageProxy(long[] pixelData, long[] dimensions) {
 		acquire(pixelData, dimensions);
-		pixels = pixelData;
+		this.pixelData = pixelData;
+
+		System.out.println("Image: " + internalImagePointer);
+		System.out.println("Array: " + internalArrayPointer);
+		assert internalImagePointer != 0;
+		assert internalArrayPointer != 0;
 	}
 
 	@Override
