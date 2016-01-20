@@ -33,13 +33,25 @@ JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire
     findImageProxyClass(env);
     
     jboolean isCopy = false;
-    long long* pixelDataPointer = static_cast<long long*>(env->GetLongArrayElements(pixelData, &isCopy));
+    jlong* pixelDataPointer = static_cast<jlong*>(env->GetLongArrayElements(pixelData, &isCopy));
     jint pixelDataLength = env->GetArrayLength(pixelData);
+    
+    jlong* dimensionsPointer = static_cast<jlong*>(env->GetLongArrayElements(dimensions, &isCopy));
+    jint dimensionsLength = env->GetArrayLength(dimensions);
 
     sitk::ImportImageFilter importFilter;
-    importFilter.SetSpacing( std::vector<double>{1.0f, 1.0f} );
-    printf("Yay! 7\n");
+    importFilter.SetSpacing(std::vector<double>{dimensionsLength, 1.0f});
+    importFilter.SetOrigin(std::vector<double>{dimensionsLength, 0.0f});
+
+    importFilter.SetSize(std::vector<unsigned int>{2, 100});
     importFilter.SetBufferAsInt64(pixelDataPointer, pixelDataLength);
+    
+    sitk::Image* img = new sitk::Image(std::move(importFilter.Execute()));
+
+    env->SetLongField(o, imageProxy_internalImagePointer, reinterpret_cast<jlong>(img));
+    env->SetLongField(o, imageProxy_internalArrayPointer, reinterpret_cast<jlong>(pixelDataPointer));
+    
+    env->ReleaseLongArrayElements(dimensions, dimensionsPointer, 0);
 }
 
 /*
