@@ -3,8 +3,25 @@
 #include "../../target/jni/net_imagej_itk_ImageProxy.h"
 
 jclass imageProxyClass = nullptr;
+jfieldID imageProxy_internalImagePointer = nullptr;
+jfieldID imageProxy_internalArrayPointer = nullptr;
+jfieldID imageProxy_pixelData = nullptr;
 
 namespace sitk = itk::simple;
+
+void findImageProxyClass(JNIEnv* env) {
+  if (imageProxyClass == nullptr) {
+      printf("Finding ImageProxy class:\n");
+      imageProxyClass = env->FindClass("net/imagej/itk/ImageProxy");
+      printf("-- internalImagePointer\n");
+      imageProxy_internalImagePointer = env->GetFieldID(imageProxyClass, "internalImagePointer", "J");
+      printf("-- internalArrayPointer\n");
+      imageProxy_internalArrayPointer = env->GetFieldID(imageProxyClass, "internalArrayPointer", "J");
+      printf("-- pixelData\n");
+      imageProxy_pixelData = env->GetFieldID(imageProxyClass, "pixelData", "[J");
+      printf("-- DONE!\n");
+  }
+}
 
 /*
  * Class:     net_imagej_itk_ImageProxy
