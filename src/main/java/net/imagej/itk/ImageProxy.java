@@ -12,7 +12,7 @@ public class ImageProxy {
 	/* Some members only used from the C side */
 	private long internalImagePointer;
 	private long internalArrayPointer;
-	private long[] pixelData;
+	private Object pixelData;
 
 	/**
 	 * Constructor
@@ -48,6 +48,7 @@ public class ImageProxy {
 	 * @param dimensions
 	 */
 	private native void acquire(long[] pixelData, long[] dimensions);
+	private native void acquire(int[] pixelData, long[] dimensions);
 
 	/**
 	 * @return the acquired Image.
