@@ -24,6 +24,11 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2</artifactId>
+		</dependency>
+	
 		<!-- ITK dependencies -->
 		<dependency>
 			<groupId>org.itk.simple</groupId>
