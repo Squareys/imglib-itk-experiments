@@ -66,6 +66,7 @@
 									<arg value="-d" />
 									<arg value="${project.build.directory}/jni" />
 									<arg value="net.imagej.itk.ImageProxy" />
+									<arg value="net.imagej.itk.ImageByteBufferProxy" />
 								</exec>
 							</target>
 						</configuration>

@@ -1,10 +1,12 @@
 
 set(NATRIVEIMAGEPROXY_SRC
-	NativeImageProxy.cpp
+    NativeImageProxy.cpp
+    NativeImageByteBufferProxy.cpp
 )
 
 set(NATIVEIMAGEPROXY_HEADERS
     ../../target/jni/net_imagej_itk_ImageProxy.h
+    ../../target/jni/net_imagej_itk_ImageByteBufferProxy.h
 )
 
 add_library(NativeImageProxy SHARED ${NATRIVEIMAGEPROXY_SRC} ${NATIVEIMAGEPROXY_HEADERS})
