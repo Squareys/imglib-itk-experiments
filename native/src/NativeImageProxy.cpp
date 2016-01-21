@@ -63,5 +63,5 @@ JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_release(JNIEnv * env, jobj
     jlongArray pixelData = jlongArray(env->GetObjectField(o, imageProxy_pixelData));
 
     // release the array.
-    env->ReleaseLongArrayElements(pixelData, arrayPointer, (jint)0);
+    env->ReleaseLongArrayElements(pixelData, arrayPointer, 0);
 }
