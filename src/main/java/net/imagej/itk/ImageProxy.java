@@ -6,6 +6,7 @@ public class ImageProxy {
 
 	static {
 		System.loadLibrary("NativeImageProxy");
+		init();
 	}
 
 	/* Some members only used from the C side */
@@ -34,6 +35,11 @@ public class ImageProxy {
 		release();
 		super.finalize();
 	}
+
+	/**
+	 * One-time initialization of the native side of ImageProxy.
+	 */
+	private static native void init();
 
 	/**
 	 * Acquire an Image from given data.

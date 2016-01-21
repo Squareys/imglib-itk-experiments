@@ -9,18 +9,17 @@ jfieldID imageProxy_pixelData = nullptr;
 
 namespace sitk = itk::simple;
 
-void findImageProxyClass(JNIEnv* env) {
-  if (imageProxyClass == nullptr) {
-      printf("Finding ImageProxy class:\n");
-      imageProxyClass = env->FindClass("net/imagej/itk/ImageProxy");
-      printf("-- internalImagePointer\n");
-      imageProxy_internalImagePointer = env->GetFieldID(imageProxyClass, "internalImagePointer", "J");
-      printf("-- internalArrayPointer\n");
-      imageProxy_internalArrayPointer = env->GetFieldID(imageProxyClass, "internalArrayPointer", "J");
-      printf("-- pixelData\n");
-      imageProxy_pixelData = env->GetFieldID(imageProxyClass, "pixelData", "[J");
-      printf("-- DONE!\n");
-  }
+JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_init(JNIEnv* env, jclass cls) {
+  printf("Finding ImageProxy class:\n");
+  imageProxyClass = cls;
+  printf("-- internalImagePointer\n");
+  imageProxy_internalImagePointer = env->GetFieldID(imageProxyClass, "internalImagePointer", "J");
+  printf("-- internalArrayPointer\n");
+  imageProxy_internalArrayPointer = env->GetFieldID(imageProxyClass, "internalArrayPointer", "J");
+  printf("-- pixelData\n");
+  imageProxy_pixelData = env->GetFieldID(imageProxyClass, "pixelData", "[J");
+  printf("-- DONE!\n");
+}
 }
 
 /*
@@ -30,7 +29,6 @@ void findImageProxyClass(JNIEnv* env) {
  */
 JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire
   (JNIEnv * env, jobject o, jlongArray pixelData, jlongArray dimensions) {
-    findImageProxyClass(env);
     
     jboolean isCopy = false;
     jlong* pixelDataPointer = static_cast<jlong*>(env->GetLongArrayElements(pixelData, &isCopy));
@@ -60,8 +58,6 @@ JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_acquire
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_net_imagej_itk_ImageProxy_release(JNIEnv * env, jobject o) {
-    findImageProxyClass(env);
-
     // get values of fields
     jlong* arrayPointer = reinterpret_cast<jlong*>(env->GetLongField(o, imageProxy_internalArrayPointer));
     jlongArray pixelData = jlongArray(env->GetObjectField(o, imageProxy_pixelData));
